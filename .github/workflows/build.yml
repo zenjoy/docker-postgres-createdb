@@ -50,8 +50,9 @@ jobs:
         run: |
           ALPINE_VERSION=$(grep -Eo 'alpine:[0-9]+\.[0-9]+\.[0-9]+$' Dockerfile | cut -d ':' -f2)
           MAJOR=${{ matrix.postgresql_version }}
-          POSTGRESQL_VERSION=$(./.github/get-version.sh $MAJOR $ALPINE_VERSION)
+          POSTGRESQL_VERSION=$(./.github/get-version.sh ${MAJOR} ${ALPINE_VERSION})
           MINOR=$(echo $POSTGRESQL_VERSION | cut -d . -f 2)
+          echo "alpine_version=$ALPINE_VERSION" | tee -a $GITHUB_OUTPUT
           echo "major=$MAJOR" | tee -a $GITHUB_OUTPUT
           echo "minor=$MINOR" | tee -a $GITHUB_OUTPUT
           echo "version=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
