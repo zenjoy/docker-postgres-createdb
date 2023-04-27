@@ -88,9 +88,8 @@ jobs:
             docker.io/${{ steps.name.outputs.name }}
             ghcr.io/${{ steps.name.outputs.name }}
           tags: |
-            type=semver,pattern={{version}},value=v${{ steps.pg_version.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=v${{ steps.pg_version.outputs.version }}
-            type=semver,pattern={{major}},value=v${{ steps.pg_version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=v${{ steps.pg_version.outputs.version }}.0
+            type=semver,pattern={{major}},value=v${{ steps.pg_version.outputs.version }}.0
           labels: |
             org.opencontainers.image.title=${{ steps.title.outputs.title }}
 
@@ -143,5 +142,5 @@ jobs:
           git push -f -u origin "v$MAJOR"
           git push -f -u origin "v$MAJOR.$MINOR"
         env:
-          MINOR: ${{ steps.version.outputs.minor }}
-          MAJOR: ${{ steps.version.outputs.major }}
+          MINOR: ${{ steps.pg_version.outputs.minor }}
+          MAJOR: ${{ steps.pg_version.outputs.major }}
