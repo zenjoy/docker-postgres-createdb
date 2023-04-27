@@ -57,7 +57,6 @@ jobs:
         with:
           url: |
             https://pkgs.alpinelinux.org/packages?name=postgresql${{ matrix.postgresql_version}}-client&branch=v${{ steps.alpine.outputs.version }}&arch
-          extra: -sX GET
 
       - name: Parse PostgreSQL version
         id: version
