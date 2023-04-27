@@ -21,7 +21,7 @@ jobs:
   build:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     name: Build and publish image
-    runs-on: ubuntu-latest-16-cores
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -48,28 +48,29 @@ jobs:
       - name: Parse Alpine Version
         id: alpine
         run: |
-          ALPINE_VERSION=$(grep -Eo 'alpine:[0-9]+\.[0-9]+\.[0-9]+$' Dockerfile | cut -d ':' -f2)
+          ALPINE_VERSION=$(grep -Eo 'alpine:[0-9]+\.[0-9]+\.[0-9]+$' Dockerfile | cut -d ':' -f2 | rev | cut -d . -f2- | rev)
           echo "version=$ALPINE_VERSION" | tee -a $GITHUB_OUTPUT
 
       - name: Get PostgreSQL version
-        id: pg_version
-        uses: wei/curl@v1
+        id: package_versions
+        uses: dedene/curl@main
         with:
-          args: |
-            -sX https://pkgs.alpinelinux.org/packages?name=postgresql${{ matrix.postgresql_version}}-client&branch=v${{ steps.alpine.outputs.version }}&arch
+          url:
+            https://pkgs.alpinelinux.org/packages?name=postgresql${{
+            matrix.postgresql_version}}-client\&branch=v${{ steps.alpine.outputs.version }}
 
       - name: Parse PostgreSQL version
-        id: version
+        id: pg_version
         run: |
-          POSTGRESQL_VERSION=$(echo "${{ steps.pg_version.outputs.output }}" | grep -oP '(?<=<td class="version">)[^<]*' 2>/dev/null)
+          POSTGRESQL_VERSION=$(echo '${{ steps.package_versions.outputs.curl_output }}' | tr '\n' ' ' | grep -oP '(?<=<td class="version">)[^<]*' | head -1)
           POSTGRESQL_VERSION="${POSTGRESQL_VERSION%%_*}"
           POSTGRESQL_VERSION="${POSTGRESQL_VERSION%%-*}"
 
+          POSTGRESQL_MAJOR_VERSION=$(echo $POSTGRESQL_VERSION | cut -d . -f 1)
           POSTGRESQL_MINOR_VERSION=$(echo $POSTGRESQL_VERSION | cut -d . -f 2)
-          echo "alpine_version=$ALPINE_VERSION" | tee -a $GITHUB_OUTPUT
-          echo "major=$POSTGRESQL_MAJOR_VERSION" | tee -a $GITHUB_OUTPUT
-          echo "minor=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
-          echo "version=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
+          echo "pg_major=$POSTGRESQL_MAJOR_VERSION" | tee -a $GITHUB_OUTPUT
+          echo "pg_minor=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
+          echo "pg_version=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
 
       - name: Generate build tag from head
         id: branch
@@ -87,9 +88,9 @@ jobs:
             docker.io/${{ steps.name.outputs.name }}
             ghcr.io/${{ steps.name.outputs.name }}
           tags: |
-            type=semver,pattern={{version}},value=v${{ steps.version.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=v${{ steps.version.outputs.version }}
-            type=semver,pattern={{major}},value=v${{ steps.version.outputs.version }}
+            type=semver,pattern={{version}},value=v${{ steps.pg_version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=v${{ steps.pg_version.outputs.version }}
+            type=semver,pattern={{major}},value=v${{ steps.pg_version.outputs.version }}
           labels: |
             org.opencontainers.image.title=${{ steps.title.outputs.title }}
 
