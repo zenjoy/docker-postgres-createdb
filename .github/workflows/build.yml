@@ -45,13 +45,24 @@ jobs:
         run:
           echo "title=$(echo ${GITHUB_REPOSITORY#*/} | sed 's/docker-//')" | tee -a $GITHUB_OUTPUT
 
+      - name: Parse Alpine Version
+        id: alpine
+        run: |
+          ALPINE_VERSION=$(grep -Eo 'alpine:[0-9]+\.[0-9]+\.[0-9]+$' Dockerfile | cut -d ':' -f2)
+          echo "version=$ALPINE_VERSION" | tee -a $GITHUB_OUTPUT
+
+      - name: Get PostgreSQL version
+        id: pg_version
+        uses: dedene/curl@main
+        with:
+          url: |
+            https://pkgs.alpinelinux.org/packages?name=postgresql${{ matrix.postgresql_version}}-client&branch=v${{ steps.alpine.outputs.version }}&arch
+          extra: -sX GET
+
       - name: Parse PostgreSQL version
         id: version
         run: |
-          ALPINE_VERSION=$(grep -Eo 'alpine:[0-9]+\.[0-9]+\.[0-9]+$' Dockerfile | cut -d ':' -f2)
-          POSTGRESQL_MAJOR_VERSION=${{ matrix.postgresql_version }}
-
-          POSTGRESQL_VERSION=$(curl -sX GET "https://pkgs.alpinelinux.org/packages?name=postgresql${POSTGRESQL_MAJOR_VERSION}-client&branch=v${ALPINE_VERSION}&arch" | grep -oP '(?<=<td class="version">)[^<]*' 2>/dev/null)
+          POSTGRESQL_VERSION=$(echo "${{ steps.pg_version.outputs.curl_output }}" | grep -oP '(?<=<td class="version">)[^<]*' 2>/dev/null)
           POSTGRESQL_VERSION="${POSTGRESQL_VERSION%%_*}"
           POSTGRESQL_VERSION="${POSTGRESQL_VERSION%%-*}"
 
