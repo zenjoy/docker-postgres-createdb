@@ -53,7 +53,7 @@ jobs:
 
       - name: Get PostgreSQL version
         id: package_versions
-        uses: dedene/curl@main
+        uses: dedene/curl@v1
         with:
           url:
             https://pkgs.alpinelinux.org/packages?name=postgresql${{
@@ -68,9 +68,9 @@ jobs:
 
           POSTGRESQL_MAJOR_VERSION=$(echo $POSTGRESQL_VERSION | cut -d . -f 1)
           POSTGRESQL_MINOR_VERSION=$(echo $POSTGRESQL_VERSION | cut -d . -f 2)
-          echo "pg_major=$POSTGRESQL_MAJOR_VERSION" | tee -a $GITHUB_OUTPUT
-          echo "pg_minor=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
-          echo "pg_version=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
+          echo "major=$POSTGRESQL_MAJOR_VERSION" | tee -a $GITHUB_OUTPUT
+          echo "minor=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
+          echo "version=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
 
       - name: Generate build tag from head
         id: branch
