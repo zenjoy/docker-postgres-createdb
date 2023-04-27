@@ -53,15 +53,15 @@ jobs:
 
       - name: Get PostgreSQL version
         id: pg_version
-        uses: dedene/curl@main
+        uses: wei/curl@v1
         with:
-          url: |
-            https://pkgs.alpinelinux.org/packages?name=postgresql${{ matrix.postgresql_version}}-client&branch=v${{ steps.alpine.outputs.version }}&arch
+          args: |
+            -sX https://pkgs.alpinelinux.org/packages?name=postgresql${{ matrix.postgresql_version}}-client&branch=v${{ steps.alpine.outputs.version }}&arch
 
       - name: Parse PostgreSQL version
         id: version
         run: |
-          POSTGRESQL_VERSION=$(echo "${{ steps.pg_version.outputs.curl_output }}" | grep -oP '(?<=<td class="version">)[^<]*' 2>/dev/null)
+          POSTGRESQL_VERSION=$(echo "${{ steps.pg_version.outputs.output }}" | grep -oP '(?<=<td class="version">)[^<]*' 2>/dev/null)
           POSTGRESQL_VERSION="${POSTGRESQL_VERSION%%_*}"
           POSTGRESQL_VERSION="${POSTGRESQL_VERSION%%-*}"
 
