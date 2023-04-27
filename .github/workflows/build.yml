@@ -69,7 +69,7 @@ jobs:
           POSTGRESQL_MAJOR_VERSION=$(echo $POSTGRESQL_VERSION | cut -d . -f 1)
           POSTGRESQL_MINOR_VERSION=$(echo $POSTGRESQL_VERSION | cut -d . -f 2)
           echo "major=$POSTGRESQL_MAJOR_VERSION" | tee -a $GITHUB_OUTPUT
-          echo "minor=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
+          echo "minor=$POSTGRESQL_MINOR_VERSION" | tee -a $GITHUB_OUTPUT
           echo "version=$POSTGRESQL_VERSION" | tee -a $GITHUB_OUTPUT
 
       - name: Generate build tag from head
