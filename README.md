@@ -1,8 +1,8 @@
-# postgresql-createdb
+# docker-postgres-createdb
 
 [![Docker Hub](https://img.shields.io/badge/Docker%20Hub-zenjoy%2Fpostgresql--createdb-lightgrey?style=flat)](https://hub.docker.com/r/zenjoy/postgresql-createdb)
-[![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/zenjoy/docker-postgresql-createdb?label=version)](https://github.com/zenjoy/docker-postgresql-createdb/tags)
-[![License](https://img.shields.io/github/license/zenjoy/docker-postgresql-createdb)](https://github.com/zenjoy/docker-postgresql-createdb/blob/main/LICENSE)
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/zenjoy/docker-postgres-createdb?label=version)](https://github.com/zenjoy/docker-postgres-createdb/tags)
+[![License](https://img.shields.io/github/license/zenjoy/docker-postgres-createdb)](https://github.com/zenjoy/docker-postgres-createdb/blob/main/LICENSE)
 
 A small helper container to initialize Postgres databases using GitOps. Available on Docker Hub or
 GitHub Container Registry (GHCR) for AMD64 or ARM64.
@@ -41,17 +41,17 @@ images as follows:
 ```sh
 cosign verify \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  --certificate-identity-regexp https://github.com/zenjoy/docker-postgresql-createdb/.github/workflows/ \
+  --certificate-identity-regexp https://github.com/zenjoy/docker-postgres-createdb/.github/workflows/ \
   zenjoy/postgres-createdb:latest
 ```
 
 ## Contributing
 
 Feel free to contribute and make things better by opening an
-[Issue](https://github.com/zenjoy/docker-postgresql-createdb/issues) or
-[Pull Request](https://github.com/zenjoy/docker-postgresql-createdb/pulls).
+[Issue](https://github.com/zenjoy/docker-postgres-createdb/issues) or
+[Pull Request](https://github.com/zenjoy/docker-postgres-createdb/pulls).
 
 ## License
 
-View [license information](https://github.com/zenjoy/docker-postgresql-createdb/blob/main/LICENSE)
-for the software contained in this image.
+View [license information](https://github.com/zenjoy/docker-postgres-createdb/blob/main/LICENSE) for
+the software contained in this image.
