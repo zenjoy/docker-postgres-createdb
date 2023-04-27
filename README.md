@@ -1,6 +1,6 @@
 # docker-postgres-createdb
 
-[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-zenjoy%2Fpostgresql--createdb-lightgrey?style=flat)](https://hub.docker.com/r/zenjoy/postgresql-createdb)
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-zenjoy%2Fpostgresql--createdb-lightgrey?style=flat)](https://hub.docker.com/r/zenjoy/postgres-createdb)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/zenjoy/docker-postgres-createdb?label=version)](https://github.com/zenjoy/docker-postgres-createdb/tags)
 [![License](https://img.shields.io/github/license/zenjoy/docker-postgres-createdb)](https://github.com/zenjoy/docker-postgres-createdb/blob/main/LICENSE)
 
