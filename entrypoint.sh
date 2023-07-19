@@ -3,7 +3,7 @@
 export PGHOST="${POSTGRES_HOST}"
 export PGUSER="${POSTGRES_SUPER_USER:-postgres}"
 export PGPASSWORD="${POSTGRES_SUPER_PASS}"
-export PGLOCALE="${POSTGRES_LOCALE:-nl_BE.UTF-8}"
+export PGLOCALE="${POSTGRES_LOCALE:-en_US.utf-8}"
 
 if [[ -z "${PGHOST}" || -z "${PGUSER}" || -z "${PGPASSWORD}" || -z "${POSTGRES_USER}" || -z "${POSTGRES_PASS}" || -z "${POSTGRES_DB}" ]]; then
     printf "\e[1;32m%-6s\e[m\n" "Invalid configuration ..."
